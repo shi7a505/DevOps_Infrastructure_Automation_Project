@@ -1,14 +1,14 @@
 # DevOps Infrastructure Automation Project
 
-## 🎯 Project Overview
+## Project Overview
 
-This project demonstrates a complete DevOps workflow using:
-- **Terraform** - Infrastructure as Code
-- **Ansible** - Configuration Management
-- **Jenkins** - CI/CD Automation
-- **AWS** - Cloud Infrastructure
+This repository demonstrates a complete DevOps workflow using the following tools:
+- **Terraform** for Infrastructure as Code
+- **Ansible** for configuration management
+- **Jenkins** for CI/CD automation
+- **AWS** as the cloud provider
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Local Machine
@@ -19,32 +19,32 @@ Terraform Controller EC2
     ↓
 terraform-main (creates DevOps Server EC2)
     ↓
-DevOps Server EC2 (Jenkins + Apps)
+DevOps Server EC2 (Jenkins + Applications)
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 .
 ├── terraform-bootstrap/   # Creates the Terraform Controller EC2
 ├── terraform-main/        # Creates the DevOps Main Server
-├── ansible/              # Installs Jenkins on DevOps Server
+├── ansible/               # Installs Jenkins on DevOps Server
 └── README.md
 ```
 
-## 🚀 Status
+## Status
 
-🔨 Work in Progress...
+This project is a work in progress.
 
-## 📝 Prerequisites
+## Prerequisites
 
-- AWS Account
+- AWS account
 - AWS CLI configured
 - Terraform installed
 - Ansible installed
-- SSH Key Pair created on AWS
+- SSH key pair created on AWS
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### Phase 1: Bootstrap (Create Controller)
 ```bash
@@ -67,10 +67,10 @@ cd ansible
 ansible-playbook -i inventory.ini install-jenkins.yml
 ```
 
-## 👤 Author
+## Author
 
 **shi7a505**
 
 ---
 
-*This project is part of my DevOps learning journey.*
+This repository is part of my DevOps learning and practice.
