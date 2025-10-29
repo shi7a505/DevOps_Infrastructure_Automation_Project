@@ -1,0 +1,115 @@
+---
+- name: Install and Configure Nexus Repository Manager
+  hosts: nexus
+  become: yes
+  
+  vars:
+    nexus_version: "3.68.1-02"
+    nexus_download_url: "https://download.sonatype.com/nexus/3/nexus-{{ nexus_version }}-unix.tar.gz"
+    nexus_dir: "/opt/nexus"
+    nexus_data_dir: "/opt/sonatype-work"
+    nexus_user: "nexus"
+    
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Java 8
+      apt:
+        name: openjdk-8-jdk
+        state: present
+
+    - name: Create Nexus user
+      user:
+        name: "{{ nexus_user }}"
+        system: yes
+        shell: /bin/bash
+        home: "{{ nexus_dir }}"
+        create_home: no
+
+    - name: Create Nexus directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ nexus_user }}"
+        group: "{{ nexus_user }}"
+        mode: '0755'
+      loop:
+        - "{{ nexus_dir }}"
+        - "{{ nexus_data_dir }}"
+
+    - name: Download Nexus
+      get_url:
+        url: "{{ nexus_download_url }}"
+        dest: "/tmp/nexus.tar.gz"
+        timeout: 300
+
+    - name: Extract Nexus
+      unarchive:
+        src: "/tmp/nexus.tar.gz"
+        dest: "{{ nexus_dir }}"
+        remote_src: yes
+        extra_opts: [--strip-components=1]
+        owner: "{{ nexus_user }}"
+        group: "{{ nexus_user }}"
+
+    - name: Set Nexus run as user
+      lineinfile:
+        path: "{{ nexus_dir }}/bin/nexus.rc"
+        line: "run_as_user={{ nexus_user }}"
+        create: yes
+
+    - name: Configure Nexus data directory
+      lineinfile:
+        path: "{{ nexus_dir }}/bin/nexus.vmoptions"
+        regexp: '^-Dkaraf.data='
+        line: "-Dkaraf.data={{ nexus_data_dir }}/nexus3"
+
+    - name: Create Nexus systemd service
+      copy:
+        dest: /etc/systemd/system/nexus.service
+        content: |
+          [Unit]
+          Description=Nexus Repository Manager
+          After=network.target
+
+          [Service]
+          Type=forking
+          LimitNOFILE=65536
+          ExecStart={{ nexus_dir }}/bin/nexus start
+          ExecStop={{ nexus_dir }}/bin/nexus stop
+          User={{ nexus_user }}
+          Restart=on-abort
+          TimeoutSec=600
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Start and enable Nexus
+      systemd:
+        name: nexus
+        state: started
+        enabled: yes
+
+    - name: Wait for Nexus to start
+      wait_for:
+        port: 8081
+        delay: 30
+        timeout: 600
+
+    - name: Get Nexus admin password
+      slurp:
+        src: "{{ nexus_data_dir }}/nexus3/admin.password"
+      register: nexus_admin_password
+      ignore_errors: yes
+
+    - name: Display Nexus admin password
+      debug:
+        msg: "Nexus Admin Password: {{ nexus_admin_password.content | b64decode }}"
+      when: nexus_admin_password is succeeded

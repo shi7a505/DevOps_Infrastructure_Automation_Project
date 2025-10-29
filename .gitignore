@@ -1,28 +1,26 @@
 # Terraform
-*.tfstate
-*.tfstate.*
-.terraform/
-*.tfvars
-.terraform.lock.hcl
+**/.terraform/
+**/.terraform.lock.hcl
+**/terraform.tfstate
+**/terraform.tfstate.backup
+**/*.tfvars
+**/.terraform.tfstate.lock.info
 
 # Ansible
-*.retry
+**/*.retry
+**/ansible.log
 
 # SSH Keys
-*.pem
-*.key
-
-# AWS Credentials
-credentials
-config
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
+**/*.pem
+**/.ssh/
 
 # OS
 .DS_Store
 Thumbs.db
-CREDENTIALS.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
