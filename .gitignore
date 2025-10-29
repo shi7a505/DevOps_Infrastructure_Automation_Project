@@ -25,3 +25,4 @@ config
 # OS
 .DS_Store
 Thumbs.db
+CREDENTIALS.md
