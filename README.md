@@ -32,10 +32,6 @@ DevOps Server EC2 (Jenkins + Applications)
 └── README.md
 ```
 
-## Status
-
-This project is a work in progress.
-
 ## Prerequisites
 
 - AWS account
