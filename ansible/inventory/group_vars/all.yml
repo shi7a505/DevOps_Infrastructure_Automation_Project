@@ -1,0 +1,33 @@
+---
+# Global Variables
+environment: production
+region: eu-north-1
+
+# Jenkins Configuration
+jenkins_url: "http://13.51.161.0:8080"
+jenkins_admin_user: admin
+jenkins_plugins:
+  - git
+  - maven-plugin
+  - sonar
+  - nexus-artifact-uploader
+  - pipeline-stage-view
+  - docker-plugin
+  - ansible
+
+# Nexus Configuration
+nexus_url: "http://13.53.36.41:8081"
+nexus_admin_user: admin
+
+# SonarQube Configuration
+sonarqube_url: "http://13.51.233.221:9000"
+sonarqube_admin_user: admin
+
+# Application Configuration
+app_name: sample-app
+app_port: 8080
+tomcat_version: 9
+
+# GitHub Repository
+git_repo: "https://github.com/shi7a505/sample-java-app.git"
+git_branch: main
