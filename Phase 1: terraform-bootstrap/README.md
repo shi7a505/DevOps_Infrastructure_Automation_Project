@@ -27,3 +27,5 @@ This phase creates a dedicated EC2 instance (Terraform Controller) on AWS that w
 
 - The Terraform Controller acts as a jump host to apply further infrastructure.
 - Make sure your SSH key pair is available and referenced correctly in the configuration.
+
+---
