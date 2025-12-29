@@ -63,8 +63,6 @@ cd ansible
 ansible-playbook -i inventory.ini install-jenkins.yml
 ```
 
-## Author
-
 **shi7a505**
 
 ---
